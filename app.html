@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Food Delivery App Wireframe</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#eeeeee;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+}
+.app{
+    width:360px;
+    background:#ffffff;
+    border-radius:16px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.2);
+    padding:15px;
+}
+h2{
+    text-align:center;
+    color:#333;
+}
+.screen{
+    display:none;
+}
+.screen.active{
+    display:block;
+}
+.box{
+    background:#f2f2f2;
+    padding:12px;
+    margin:8px 0;
+    border-radius:8px;
+}
+button{
+    width:100%;
+    padding:10px;
+    margin-top:10px;
+    background:#cccccc;
+    border:none;
+    border-radius:8px;
+    font-size:14px;
+}
+input{
+    width:100%;
+    padding:8px;
+    margin-top:8px;
+    border-radius:6px;
+    border:1px solid #bbb;
+}
+.small{
+    font-size:13px;
+    color:#555;
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+
+<!-- HOME / RESTAURANT LIST -->
+<div class="screen active" id="home">
+<h2>Restaurants</h2>
+
+<div class="box" onclick="openMenu('fastfood')">
+<b>Restaurant A</b>
+<p class="small">Burgers • Fast Food</p>
+</div>
+
+<div class="box" onclick="openMenu('south')">
+<b>Restaurant B</b>
+<p class="small">South Indian</p>
+</div>
+</div>
+
+<!-- MENU -->
+<div class="screen" id="menu">
+<h2 id="menuTitle">Menu</h2>
+<div id="menuItems"></div>
+<button onclick="openScreen('home')">Back</button>
+</div>
+
+<!-- CUSTOMIZE -->
+<div class="screen" id="customize">
+<h2>Customize Item</h2>
+<div class="box">
+<input type="checkbox"> Extra Topping
+</div>
+<div class="box">
+<input type="checkbox"> Less Spice
+</div>
+<button onclick="openScreen('cart')">Add to Cart</button>
+</div>
+
+<!-- CART -->
+<div class="screen" id="cart">
+<h2>Cart</h2>
+<div class="box" id="cartItem">
+Selected Item
+</div>
+<button onclick="openScreen('address')">Checkout</button>
+</div>
+
+<!-- ADDRESS -->
+<div class="screen" id="address">
+<h2>Delivery Address</h2>
+<input type="text" placeholder="House / Street">
+<input type="text" placeholder="City">
+<input type="text" placeholder="Pincode">
+<button onclick="openScreen('track')">Place Order</button>
+</div>
+
+<!-- TRACK ORDER -->
+<div class="screen" id="track">
+<h2>Order Tracking</h2>
+<div class="box">✔ Order Confirmed</div>
+<div class="box">🍳 Preparing Food</div>
+<div class="box">🚴 Out for Delivery</div>
+<div class="box">🏠 Delivered</div>
+<button onclick="openScreen('home')">Home</button>
+</div>
+
+</div>
+
+<script>
+let selectedItem = "";
+
+function openScreen(id){
+    document.querySelectorAll('.screen').forEach(
+        s => s.classList.remove('active')
+    );
+    document.getElementById(id).classList.add('active');
+}
+
+function openMenu(type){
+    const menu = document.getElementById("menuItems");
+    const title = document.getElementById("menuTitle");
+    menu.innerHTML = "";
+
+    if(type === "fastfood"){
+        title.innerText = "Fast Food Menu";
+        addItem("Veg Burger – ₹120");
+        addItem("French Fries – ₹80");
+    } else {
+        title.innerText = "South Indian Menu";
+        addItem("Idly (2 pcs) – ₹40");
+        addItem("Dosa – ₹60");
+        addItem("Pongal – ₹70");
+    }
+
+    openScreen('menu');
+}
+
+function addItem(name){
+    const div = document.createElement("div");
+    div.className = "box";
+    div.innerHTML = `<b>${name}</b>`;
+    div.onclick = () => {
+        selectedItem = name;
+        document.getElementById("cartItem").innerText = name;
+        openScreen('customize');
+    };
+    document.getElementById("menuItems").appendChild(div);
+}
+</script>
+
+</body>
+</html>
